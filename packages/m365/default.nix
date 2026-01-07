@@ -2,7 +2,7 @@
 
 python3Packages.buildPythonApplication {
   pname = "m365-refresh";
-  src = ./src
+  src = ./src;
 
   propagatedBuildInputs = with python3Packages [
     msal
