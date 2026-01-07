@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from msal import ConfidentialClientApplication, SerializableTokenCache
 import sys
 import argparse
