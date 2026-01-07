@@ -2,6 +2,7 @@
 
 python3Packages.buildPythonApplication {
   pname = "m365";
+  version = "1.0.0";
   src = ./src;
 
   propagatedBuildInputs = with python3Packages; [
