@@ -12,7 +12,7 @@ in
       description = "Systemd timer schedule";
     };
     config = lib.mkOption {
-      type = lib.type.str;
+      type = lib.types.str;
       description = "path to configuration file";
     };
   };
