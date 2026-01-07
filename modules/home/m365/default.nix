@@ -24,7 +24,7 @@ in
   	  };
   	  Service = {
   	  	Type = "oneshot";
-  	  	ExecStart = "${pkgs.m365}/bin/m365-refresh.py --config ${cfg.config}"
+  	  	ExecStart = "${pkgs.m365}/bin/m365-refresh.py --config ${cfg.config}";
   	  };
   	};
 
