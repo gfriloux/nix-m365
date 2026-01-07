@@ -4,7 +4,7 @@ let
   cfg = config.services.m365;
 in
 {
-  options.services.m365-refresh = {
+  options.services.m365 = {
     enable = lib.mkEnableOption "m365 MSAL shit";
     schedule = lib.mkOption {
       type = lib.types.str;
