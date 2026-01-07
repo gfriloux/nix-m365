@@ -11,6 +11,10 @@ in
       default = "hourly";
       description = "Systemd timer schedule";
     }
+    config = lib.mkOption {
+      type = lib.type.str;
+      description = "path to configuration file";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -20,7 +24,7 @@ in
   	  };
   	  Service = {
   	  	Type = "oneshot";
-  	  	ExecStart = "${pkgs.m365}/bin/m365-refresh.py"
+  	  	ExecStart = "${pkgs.m365}/bin/m365-refresh.py --config ${cfg.config}"
   	  };
   	};
 
