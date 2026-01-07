@@ -10,7 +10,7 @@ in
       type = lib.types.str;
       default = "hourly";
       description = "Systemd timer schedule";
-    }
+    };
     config = lib.mkOption {
       type = lib.type.str;
       description = "path to configuration file";
