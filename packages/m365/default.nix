@@ -1,7 +1,7 @@
 { lib, pkgs, python3Packages, ... }:
 
 python3Packages.buildPythonApplication {
-  pname = "m365-refresh";
+  pname = "m365";
   src = ./src;
 
   propagatedBuildInputs = with python3Packages; [
@@ -12,7 +12,7 @@ python3Packages.buildPythonApplication {
 
   installPhase = ''
     mkdir -p $out/bin
-    install -m755 m365-refresh.py $out/bin/
+    install -m755 m365-refresh.py $out/bin/m365-refresh.py
   '';
 
   meta = with lib; {
