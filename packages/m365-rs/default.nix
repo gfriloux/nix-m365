@@ -5,7 +5,7 @@ pkgs.pkgsStatic.rustPlatform.buildRustPackage {
   version = "1.0.0";
   src = lib.cleanSource ./.;
 
-  cargoHash = "sha256-+Lui49OizN1TXpC5BUpXt2g1jtyi6kRlj9I1Suh3g38=";
+  cargoHash = "sha256-RHctvPjA5LIq98JrD7UUocOeKrHEH6GYyftdyHHj7ws=";
 
   meta = with lib; {
     description = "Refresh M365 OAuth2 access token (Rust, statically compiled)";

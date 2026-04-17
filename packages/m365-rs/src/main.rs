@@ -1,6 +1,6 @@
+use anyhow::{Context, Result};
 use clap::Parser;
 use serde::Deserialize;
-use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
 
@@ -17,8 +17,8 @@ struct Config {
     client_secret: String,
     authority: String,
     scopes: Vec<String>,
-    refresh_token_file: String,
-    access_token_file: String,
+    refresh_token_file: PathBuf,
+    access_token_file: PathBuf,
 }
 
 #[derive(Deserialize)]
@@ -27,52 +27,52 @@ struct TokenResponse {
     refresh_token: String,
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<()> {
     let args = Args::parse();
 
     let config_content = fs::read_to_string(&args.config)
-        .map_err(|e| format!("failed to read config {:?}: {}", args.config, e))?;
+        .with_context(|| format!("failed to read config {:?}", args.config))?;
     let config: Config = toml::from_str(&config_content)
-        .map_err(|e| format!("failed to parse config: {}", e))?;
+        .context("failed to parse config")?;
 
     let refresh_token = fs::read_to_string(&config.refresh_token_file)
-        .map_err(|e| format!("failed to read refresh token file: {}", e))?;
-    let refresh_token = refresh_token.trim().to_string();
+        .with_context(|| format!("failed to read refresh token {:?}", config.refresh_token_file))?;
+    let refresh_token = refresh_token.trim();
 
     let token_url = format!(
         "{}/oauth2/v2.0/token",
         config.authority.trim_end_matches('/')
     );
-
     let scopes = config.scopes.join(" ");
-    let mut params = HashMap::new();
-    params.insert("grant_type", "refresh_token");
-    params.insert("client_id", &config.client_id);
-    params.insert("client_secret", &config.client_secret);
-    params.insert("refresh_token", &refresh_token);
-    params.insert("scope", &scopes);
 
-    let client = reqwest::blocking::Client::new();
-    let response = client
+    let params = [
+        ("grant_type", "refresh_token"),
+        ("client_id", config.client_id.as_str()),
+        ("client_secret", config.client_secret.as_str()),
+        ("refresh_token", refresh_token),
+        ("scope", scopes.as_str()),
+    ];
+
+    let response = reqwest::blocking::Client::new()
         .post(&token_url)
         .form(&params)
         .send()
-        .map_err(|e| format!("HTTP request failed: {}", e))?;
+        .context("HTTP request failed")?;
 
     if !response.status().is_success() {
         let status = response.status();
         let body = response.text().unwrap_or_default();
-        return Err(format!("token request failed ({}): {}", status, body).into());
+        anyhow::bail!("token request failed ({}): {}", status, body);
     }
 
     let token: TokenResponse = response
         .json()
-        .map_err(|e| format!("failed to parse token response: {}", e))?;
+        .context("failed to parse token response")?;
 
     fs::write(&config.refresh_token_file, &token.refresh_token)
-        .map_err(|e| format!("failed to write refresh token: {}", e))?;
+        .with_context(|| format!("failed to write refresh token {:?}", config.refresh_token_file))?;
     fs::write(&config.access_token_file, &token.access_token)
-        .map_err(|e| format!("failed to write access token: {}", e))?;
+        .with_context(|| format!("failed to write access token {:?}", config.access_token_file))?;
 
     Ok(())
 }

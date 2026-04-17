@@ -8,8 +8,8 @@ name = "m365-refresh"
 path = "src/main.rs"
 
 [dependencies]
+anyhow = "1"
 clap = { version = "4", features = ["derive"] }
 reqwest = { version = "0.12", features = ["blocking", "rustls-tls", "json"], default-features = false }
 serde = { version = "1", features = ["derive"] }
-serde_json = "1"
 toml = "0.8"
