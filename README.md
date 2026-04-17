@@ -51,7 +51,6 @@ Example `config.toml`:
 client_id     = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 client_secret = "your-client-secret"
 authority     = "https://login.microsoftonline.com/your-tenant-id"
-scopes        = ["https://outlook.office.com/IMAP.AccessAsUser.All", "https://outlook.office.com/SMTP.Send"]
 refresh_token_file = "/home/user/.config/m365/imap_smtp_refresh_token"
 access_token_file  = "/home/user/.config/m365/imap_smtp_access_token"
 ```
