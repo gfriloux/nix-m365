@@ -21,5 +21,8 @@ fmt-check:
 test:
     cargo test {{manifest}}
 
+test-verbose:
+    cargo test {{manifest}} -- --nocapture
+
 nix-build:
     nix build ../../#m365-rs
