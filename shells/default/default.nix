@@ -16,6 +16,7 @@ mkShell {
     clippy
     rustfmt
     rust-analyzer
+    just
   ];
 
   shellHook = ''

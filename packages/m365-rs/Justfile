@@ -1,0 +1,25 @@
+manifest := "--manifest-path " + justfile_directory() + "/Cargo.toml"
+
+build:
+    cargo build {{manifest}}
+
+release:
+    cargo build {{manifest}} --release
+
+check:
+    cargo check {{manifest}}
+
+clippy:
+    cargo clippy {{manifest}} -- -D warnings
+
+fmt:
+    cargo fmt {{manifest}}
+
+fmt-check:
+    cargo fmt {{manifest}} -- --check
+
+test:
+    cargo test {{manifest}}
+
+nix-build:
+    nix build ../../#m365-rs
