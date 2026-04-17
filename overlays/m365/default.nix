@@ -1,5 +1,3 @@
-{ channels, inputs, ... }:
-
-final: prev: {
-  m365 = inputs.self.packages.${final.system}.m365;
+{inputs, ...}: final: {
+  inherit (inputs.self.packages.${final.system}) m365 m365-rs;
 }

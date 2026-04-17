@@ -1,9 +1,11 @@
-{ lib, config, pkgs, ... }:
-
-let
-  cfg = config.services.m365-rs-refresh;
-in
 {
+  lib,
+  config,
+  pkgs,
+  ...
+}: let
+  cfg = config.services.m365-rs-refresh;
+in {
   options.services.m365-rs-refresh = {
     enable = lib.mkEnableOption "m365 OAuth2 token refresh (Rust)";
     schedule = lib.mkOption {
@@ -37,7 +39,7 @@ in
         Persistent = true;
       };
       Install = {
-        WantedBy = [ "timers.target" ];
+        WantedBy = ["timers.target"];
       };
     };
   };

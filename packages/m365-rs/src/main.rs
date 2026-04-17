@@ -32,11 +32,14 @@ fn main() -> Result<()> {
 
     let config_content = fs::read_to_string(&args.config)
         .with_context(|| format!("failed to read config {:?}", args.config))?;
-    let config: Config = toml::from_str(&config_content)
-        .context("failed to parse config")?;
+    let config: Config = toml::from_str(&config_content).context("failed to parse config")?;
 
-    let refresh_token = fs::read_to_string(&config.refresh_token_file)
-        .with_context(|| format!("failed to read refresh token {:?}", config.refresh_token_file))?;
+    let refresh_token = fs::read_to_string(&config.refresh_token_file).with_context(|| {
+        format!(
+            "failed to read refresh token {:?}",
+            config.refresh_token_file
+        )
+    })?;
     let refresh_token = refresh_token.trim();
 
     let token_url = format!(
@@ -65,14 +68,20 @@ fn main() -> Result<()> {
         anyhow::bail!("token request failed ({}): {}", status, body);
     }
 
-    let token: TokenResponse = response
-        .json()
-        .context("failed to parse token response")?;
+    let token: TokenResponse = response.json().context("failed to parse token response")?;
 
-    fs::write(&config.refresh_token_file, &token.refresh_token)
-        .with_context(|| format!("failed to write refresh token {:?}", config.refresh_token_file))?;
-    fs::write(&config.access_token_file, &token.access_token)
-        .with_context(|| format!("failed to write access token {:?}", config.access_token_file))?;
+    fs::write(&config.refresh_token_file, &token.refresh_token).with_context(|| {
+        format!(
+            "failed to write refresh token {:?}",
+            config.refresh_token_file
+        )
+    })?;
+    fs::write(&config.access_token_file, &token.access_token).with_context(|| {
+        format!(
+            "failed to write access token {:?}",
+            config.access_token_file
+        )
+    })?;
 
     Ok(())
 }

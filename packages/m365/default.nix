@@ -1,5 +1,8 @@
-{ lib, pkgs, python3Packages, ... }:
-
+{
+  lib,
+  python3Packages,
+  ...
+}:
 python3Packages.buildPythonApplication {
   pname = "m365";
   version = "1.0.0";

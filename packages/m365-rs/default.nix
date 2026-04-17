@@ -1,5 +1,8 @@
-{ lib, pkgs, ... }:
-
+{
+  lib,
+  pkgs,
+  ...
+}:
 pkgs.pkgsStatic.rustPlatform.buildRustPackage {
   pname = "m365-rs";
   version = "1.0.0";

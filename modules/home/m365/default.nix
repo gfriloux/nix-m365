@@ -1,9 +1,11 @@
-{ lib, config, pkgs, ...}:
-
-let
-  cfg = config.services.m365-refresh;
-in
 {
+  lib,
+  config,
+  pkgs,
+  ...
+}: let
+  cfg = config.services.m365-refresh;
+in {
   options.services.m365-refresh = {
     enable = lib.mkEnableOption "m365 MSAL shit";
     schedule = lib.mkOption {
@@ -18,27 +20,27 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-  	systemd.user.services.m365-refresh = {
-  	  Unit = {
-  	  	Description = "m365 MSAL shit";
-  	  };
-  	  Service = {
-  	  	Type = "oneshot";
-  	    ExecStart = "${pkgs.m365}/bin/m365-refresh.py --config ${cfg.config}";
-  	  };
-  	};
+    systemd.user.services.m365-refresh = {
+      Unit = {
+        Description = "m365 MSAL shit";
+      };
+      Service = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.m365}/bin/m365-refresh.py --config ${cfg.config}";
+      };
+    };
 
-  	systemd.user.timers.m365-refresh = {
-  	  Unit = {
-  	  	Description = "Timer for m365-refresh";
-  	  };
-  	  Timer = {
-  	  	OnCalendar = cfg.schedule;
-  	  	Persistent = true;
-  	  };
-  	  Install = {
-  	  	WantedBy = [ "timers.target" ];
-  	  };
-  	};
+    systemd.user.timers.m365-refresh = {
+      Unit = {
+        Description = "Timer for m365-refresh";
+      };
+      Timer = {
+        OnCalendar = cfg.schedule;
+        Persistent = true;
+      };
+      Install = {
+        WantedBy = ["timers.target"];
+      };
+    };
   };
 }
